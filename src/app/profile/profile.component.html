@@ -1,0 +1,58 @@
+<div class="page-container">
+
+    <div class="page-header">
+        <button routerLink="/dashboard" class="back-btn">
+            <i class="bi bi-arrow-left"></i> Dashboard
+        </button>
+    </div>
+
+    <div *ngIf="isLoading" class="loader">Loading Profile...</div>
+
+    <div *ngIf="!isLoading && employee" class="profile-wrapper">
+
+        <!-- ID Card Design -->
+        <div class="id-card">
+            <div class="card-top">
+                <div class="photo-placeholder">
+                    {{ employee.Fullname.charAt(0) }}
+                </div>
+                <h2>{{ employee.Fullname }}</h2>
+                <p class="role">{{ employee.Designation }}</p>
+                <span class="status-active">Active Employee</span>
+            </div>
+
+            <div class="card-body">
+                <div class="info-row">
+                    <label>Employee ID</label>
+                    <span>{{ employee.Pernr }}</span>
+                </div>
+                <div class="info-row">
+                    <label>Department</label>
+                    <span>{{ employee.Department }}</span>
+                </div>
+                <div class="info-row">
+                    <label>Email</label>
+                    <span>{{ employee.Email }}</span>
+                </div>
+                <div class="info-row">
+                    <label>Gender</label>
+                    <span>{{ employee.Gender === '1' ? 'Male' : 'Female' }}</span>
+                </div>
+                <div class="info-row">
+                    <label>Date of Birth</label>
+                    <span>{{ formatDate(employee.Dob) | date:'longDate' }}</span>
+                </div>
+                <div class="info-row">
+                    <label>Joining Date</label>
+                    <span>{{ formatDate(employee.JoinDate) | date:'longDate' }}</span>
+                </div>
+            </div>
+
+            <div class="card-footer">
+                <i class="bi bi-qr-code"></i>
+                <span>Digital Employee Card</span>
+            </div>
+        </div>
+
+    </div>
+</div>

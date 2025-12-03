@@ -1,0 +1,93 @@
+<div class="page-container">
+  
+  <!-- Header -->
+  <div class="page-header">
+    <button routerLink="/dashboard" class="back-btn">
+      <i class="bi bi-arrow-left"></i> Back
+    </button>
+    <h1>Leave Management</h1>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="loader-bar"></div>
+
+  <!-- Grid Layout -->
+  <div class="layout-grid">
+
+    <!-- LEFT COL: Balances & History (Working Feature) -->
+    <div class="left-col">
+      
+      <!-- Balances Mini-Cards -->
+      <div class="balance-strip">
+        <div *ngFor="let bal of balances" class="mini-card">
+          <span class="label">{{ bal.QuotaText }}</span>
+          <span class="value">{{ bal.Balance }}</span>
+          <span class="unit">Days</span>
+        </div>
+      </div>
+
+      <!-- History Table -->
+      <div class="card history-card">
+        <div class="card-header">
+          <h3>Request History</h3>
+          <!-- Filter/Sort Buttons (Visual only for FRS requirement) -->
+          <div class="filter-actions">
+            <button class="icon-btn"><i class="bi bi-funnel"></i></button>
+            <button class="icon-btn"><i class="bi bi-sort-down"></i></button>
+          </div>
+        </div>
+        
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Dates</th>
+                <th>Days</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let req of history">
+                <td>
+                  <div class="fw-bold">{{ req.LeaveText }}</div>
+                  <small class="text-muted">{{ req.LeaveType }}</small>
+                </td>
+                <td>
+                  {{ parseDate(req.Begda) | date:'MMM d' }} - {{ parseDate(req.Endda) | date:'MMM d, y' }}
+                </td>
+                <td>{{ req.DaysP }}</td>
+                <td>
+                  <span class="status-badge" 
+                    [class.approved]="req.Status === 'Approved'"
+                    [class.pending]="req.Status === 'Pending'"
+                    [class.rejected]="req.Status === 'Rejected'">
+                    {{ req.Status }}
+                  </span>
+                </td>
+              </tr>
+              <tr *ngIf="history.length === 0">
+                <td colspan="4" class="text-center">No leave history found.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT COL: Under Construction (Placeholder) -->
+    <div class="right-col">
+      <div class="card construction-card">
+        <div class="illustration">
+          <i class="bi bi-cone-striped"></i>
+        </div>
+        <h3>Apply Leave</h3>
+        <p>This feature is currently under development.</p>
+        <div class="info-badge">
+          <i class="bi bi-info-circle"></i> Phase 2 Release
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

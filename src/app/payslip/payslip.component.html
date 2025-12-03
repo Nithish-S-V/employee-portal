@@ -1,0 +1,66 @@
+<div class="page-container">
+  
+  <div class="page-header">
+    <button routerLink="/dashboard" class="back-btn">
+      <i class="bi bi-arrow-left"></i> Back
+    </button>
+    <h1>My Payslips</h1>
+  </div>
+
+  <div class="content-wrapper">
+
+    <!-- Card 1: Selector -->
+    <div class="card selector-card">
+      <h3>Select Period</h3>
+      <p>Choose the month and year to view your salary slip.</p>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Month</label>
+          <select [(ngModel)]="selectedMonth">
+            <option *ngFor="let m of months" [value]="m.val">{{ m.name }}</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label>Year</label>
+          <select [(ngModel)]="selectedYear">
+            <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+          </select>
+        </div>
+      </div>
+
+      <button (click)="fetchPayslip()" [disabled]="isLoading" class="primary-btn">
+        <span *ngIf="!isLoading">Get Payslip</span>
+        <span *ngIf="isLoading">Fetching...</span>
+      </button>
+
+      <div *ngIf="errorMessage" class="error-msg">
+        <i class="bi bi-exclamation-circle"></i> {{ errorMessage }}
+      </div>
+    </div>
+
+    <!-- Card 2: Result Preview -->
+    <div *ngIf="payslipData" class="card result-card animate-slide-up">
+      <div class="result-header">
+        <div class="icon-circle">
+          <i class="bi bi-cash-coin"></i>
+        </div>
+        <div>
+          <h4>Payslip Generated</h4>
+          <span class="period-badge">{{ selectedMonth }}/{{ selectedYear }}</span>
+        </div>
+      </div>
+
+      <div class="amount-display">
+        <span class="label">Net Pay</span>
+        <span class="value">{{ payslipData.Currency }} {{ payslipData.NetPay }}</span>
+      </div>
+
+      <button (click)="downloadPdf()" class="download-btn">
+        <i class="bi bi-file-earmark-arrow-down-fill"></i> Download PDF
+      </button>
+    </div>
+
+  </div>
+</div>

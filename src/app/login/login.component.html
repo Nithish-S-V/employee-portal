@@ -1,0 +1,56 @@
+<div class="login-wrapper">
+  
+  <!-- Background Shape for depth -->
+  <div class="bg-shape"></div>
+
+  <div class="login-card" [class.shake]="isShaking">
+    
+    <!-- Branding -->
+    <div class="brand-section">
+      <div class="logo-icon">
+        <i class="bi bi-buildings-fill"></i>
+      </div>
+      <h3>Employee Portal</h3>
+      <p>Sign in to your account</p>
+    </div>
+
+    <!-- Form -->
+    <form (ngSubmit)="onLogin()">
+      
+      <!-- Input: Emp ID -->
+      <div class="floating-input">
+        <input type="text" id="empid" [(ngModel)]="empId" name="empId" placeholder=" " required autocomplete="off">
+        <label for="empid">Employee ID</label>
+        <i class="bi bi-person input-icon"></i>
+      </div>
+
+      <!-- Input: Password -->
+      <div class="floating-input">
+        <input type="password" id="password" [(ngModel)]="password" name="password" placeholder=" " required>
+        <label for="password">Password</label>
+        <i class="bi bi-lock input-icon"></i>
+      </div>
+
+      <!-- Error Message -->
+      <div class="error-box" *ngIf="errorMessage">
+        <i class="bi bi-exclamation-triangle-fill"></i> {{ errorMessage }}
+      </div>
+
+      <!-- Actions -->
+      <div class="actions">
+        <a href="#" class="forgot-pass">Forgot password?</a>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" [disabled]="isLoading">
+        <span *ngIf="!isLoading">Sign In</span>
+        <div *ngIf="isLoading" class="spinner-border spinner-border-sm text-light" role="status"></div>
+      </button>
+
+    </form>
+  </div>
+  
+  <div class="footer-text">
+    &copy; 2025 Your Company. Secured by SAP S/4HANA.
+  </div>
+</div>

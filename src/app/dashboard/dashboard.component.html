@@ -1,0 +1,97 @@
+<!-- Navigation Bar -->
+<nav class="navbar">
+    <div class="nav-brand">
+        <i class="bi bi-grid-3x3-gap-fill"></i>
+        <span>Employee Portal</span>
+    </div>
+    <div class="nav-user">
+        <span class="user-name">{{ currentUser?.Fullname }}</span>
+        <button (click)="onLogout()" class="logout-btn">
+            <i class="bi bi-box-arrow-right"></i> Logout
+        </button>
+    </div>
+</nav>
+
+<!-- Main Layout -->
+<div class="dashboard-container">
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="loader-container">
+        <div class="spinner-border text-primary" role="status"></div>
+        <p>Syncing with SAP...</p>
+    </div>
+  <!-- ERROR MESSAGE BLOCK (Add This) -->
+  <div *ngIf="errorMessage" class="alert alert-danger" style="margin-top: 2rem; text-align: center;">
+    <i class="bi bi-exclamation-triangle-fill"></i> {{ errorMessage }}
+  </div>
+    <!-- Content Grid -->
+    <div *ngIf="!isLoading && profile" class="content-grid animate-fade-in">
+
+        <!-- 1. Profile Hero Card (Stacked Top) -->
+        <div class="card profile-card" routerLink="/profile" style="cursor: pointer;">
+            <div class="profile-header">
+                <div class="avatar">
+                    {{ profile.Fullname.charAt(0) }}
+                </div>
+                <div class="profile-info">
+                    <h2>{{ profile.Fullname }}</h2>
+                    <p class="designation">{{ profile.Designation }}</p>
+                    <div class="badges">
+                        <span class="badge">{{ profile.Department }}</span>
+                        <span class="badge-outline">ID: {{ profile.Pernr }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="profile-details">
+                <div class="detail-item">
+                    <label>Email</label>
+                    <span>{{ profile.Email }}</span>
+                </div>
+                <div class="detail-item">
+                    <label>Joining Date</label>
+                    <span>{{ formatSapDate(profile.JoinDate) | date:'mediumDate' }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Quick Actions Row -->
+        <div class="actions-row">
+            <div class="action-card" routerLink="/leave-mgt">
+                <div class="icon-box blue">
+                    <i class="bi bi-calendar-check"></i>
+                </div>
+                <h3>Leave Management</h3>
+                <p>Apply for leave or check history</p>
+            </div>
+
+            <div class="action-card" routerLink="/payslip">
+                <div class="icon-box red">
+                    <i class="bi bi-file-earmark-pdf"></i>
+                </div>
+                <h3>My Payslips</h3>
+                <p>Download monthly salary slips</p>
+            </div>
+        </div>
+
+        <!-- 3. Leave Balances Section -->
+        <div class="section-title">Your Balances</div>
+        <div class="balance-grid">
+            <div *ngFor="let bal of balances" class="balance-card">
+                <div class="balance-top">
+                    <span class="quota-name">{{ bal.QuotaText }}</span>
+                    <i class="bi bi-pie-chart-fill"></i>
+                </div>
+                <div class="balance-number">{{ bal.Balance }}</div>
+                <div class="balance-footer">
+                    <span>Total: {{ bal.Entitlement }}</span>
+                    <span>Used: {{ bal.Deduction }}</span>
+                </div>
+                <!-- Progress Bar -->
+                <div class="progress-bar-bg">
+                    <div class="progress-fill" [style.width.%]="( +bal.Balance / +bal.Entitlement ) * 100"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
