@@ -57,9 +57,21 @@
         <span class="value">{{ payslipData.Currency }} {{ payslipData.NetPay }}</span>
       </div>
 
-      <button (click)="downloadPdf()" class="download-btn">
-        <i class="bi bi-file-earmark-arrow-down-fill"></i> Download PDF
-      </button>
+      <div *ngIf="successMessage" class="success-msg">
+        <i class="bi bi-check-circle"></i> {{ successMessage }}
+      </div>
+
+      <div class="button-group">
+        <button (click)="downloadPdf()" class="download-btn">
+          <i class="bi bi-file-earmark-arrow-down-fill"></i> Download PDF
+        </button>
+        
+        <button (click)="emailPdf()" [disabled]="isEmailingPdf" class="email-btn">
+          <i class="bi bi-send-fill"></i> 
+          <span *ngIf="!isEmailingPdf">Email PDF</span>
+          <span *ngIf="isEmailingPdf">Sending...</span>
+        </button>
+      </div>
     </div>
 
   </div>

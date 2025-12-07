@@ -79,17 +79,45 @@ h4 { margin: 0; color: var(--primary); }
 .period-badge { font-size: 0.85rem; color: #888; }
 
 .amount-display {
-  text-align: center; margin-bottom: 2rem;
+  text-align: center; margin-bottom: 1.5rem;
 }
 .amount-display .label { display: block; font-size: 0.9rem; color: #888; }
 .amount-display .value { font-size: 2rem; font-weight: bold; color: var(--primary); }
 
-.download-btn {
-  width: 100%; padding: 12px; background: var(--highlight); /* Scarlet Rush */
-  color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer;
-  display: flex; align-items: center; justify-content: center; gap: 10px;
+.success-msg {
+  margin-bottom: 1rem; color: #2e7d32; background: #e8f5e9; padding: 10px;
+  border-radius: 4px; font-size: 0.9rem; text-align: center;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
 }
-.download-btn:hover { opacity: 0.9; transform: translateY(-2px); transition: 0.2s; }
+
+.button-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+@media (max-width: 600px) {
+  .button-group {
+    grid-template-columns: 1fr;
+  }
+}
+
+.download-btn, .email-btn {
+  padding: 12px; border: none; border-radius: 6px; font-weight: 600; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  color: white; transition: all 0.2s;
+}
+
+.download-btn {
+  background: var(--highlight); /* Scarlet Rush */
+}
+.download-btn:hover { opacity: 0.9; transform: translateY(-2px); }
+
+.email-btn {
+  background: var(--secondary); /* Blue */
+}
+.email-btn:hover { opacity: 0.9; transform: translateY(-2px); }
+.email-btn:disabled { background: #ccc; cursor: not-allowed; transform: none; }
 
 /* Animations */
 .animate-slide-up { animation: slideUp 0.5s ease-out; }

@@ -17,25 +17,28 @@ export class PayslipComponent implements OnInit {
 
   currentUser: any = null;
   isLoading: boolean = false;
-  
+  isEmailingPdf: boolean = false;
+  employeeEmail: string = '';
+
   // Selection
   selectedYear: string = new Date().getFullYear().toString();
   selectedMonth: string = (new Date().getMonth() + 1).toString().padStart(2, '0');
-  
+
   // Dropdown Options
   years: string[] = [];
   months = [
     { val: '01', name: 'January' }, { val: '02', name: 'February' },
-    { val: '03', name: 'March' },   { val: '04', name: 'April' },
-    { val: '05', name: 'May' },     { val: '06', name: 'June' },
-    { val: '07', name: 'July' },    { val: '08', name: 'August' },
-    { val: '09', name: 'September'},{ val: '10', name: 'October' },
-    { val: '11', name: 'November' },{ val: '12', name: 'December' }
+    { val: '03', name: 'March' }, { val: '04', name: 'April' },
+    { val: '05', name: 'May' }, { val: '06', name: 'June' },
+    { val: '07', name: 'July' }, { val: '08', name: 'August' },
+    { val: '09', name: 'September' }, { val: '10', name: 'October' },
+    { val: '11', name: 'November' }, { val: '12', name: 'December' }
   ];
 
   // Result
   payslipData: Payslip | null = null;
   errorMessage: string = '';
+  successMessage: string = '';
 
   constructor(
     private api: ApiService,
@@ -45,7 +48,7 @@ export class PayslipComponent implements OnInit {
   ) {
     // Generate last 5 years
     const currentYear = new Date().getFullYear();
-    for(let i=0; i<5; i++) {
+    for (let i = 0; i < 5; i++) {
       this.years.push((currentYear - i).toString());
     }
   }
@@ -54,6 +57,16 @@ export class PayslipComponent implements OnInit {
     this.currentUser = this.auth.currentUserValue;
     if (!this.currentUser) {
       this.router.navigate(['/login']);
+    } else {
+      // Fetch employee email from profile
+      this.api.getEmployeeProfile(this.currentUser.Empid).subscribe({
+        next: (res) => {
+          this.employeeEmail = res.d.Email || '';
+        },
+        error: (err) => {
+          console.error('Error fetching employee profile:', err);
+        }
+      });
     }
   }
 
@@ -98,5 +111,35 @@ export class PayslipComponent implements OnInit {
     // 3. Create URL and Open
     const fileURL = URL.createObjectURL(blob);
     window.open(fileURL, '_blank');
+  }
+
+  emailPdf() {
+    if (!this.payslipData?.PdfContent) {
+      alert('No PDF content available to email.');
+      return;
+    }
+
+    if (!this.employeeEmail) {
+      alert('No email address found in your profile.');
+      return;
+    }
+
+    // Simulate sending email
+    this.isEmailingPdf = true;
+    this.successMessage = '';
+    this.errorMessage = '';
+
+    // Simulate a delay for the email sending
+    setTimeout(() => {
+      this.isEmailingPdf = false;
+      this.successMessage = `Payslip sent successfully to ${this.employeeEmail}`;
+      this.cdr.detectChanges();
+
+      // Clear success message after 5 seconds
+      setTimeout(() => {
+        this.successMessage = '';
+        this.cdr.detectChanges();
+      }, 5000);
+    }, 1500);
   }
 }
