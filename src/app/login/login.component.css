@@ -30,7 +30,8 @@
   padding: 2.5rem;
   border-radius: var(--radius);
   box-shadow: var(--shadow);
-  border-top: 5px solid var(--primary); /* Twilight Indigo Accent */
+  border-top: 5px solid var(--primary);
+  /* Twilight Indigo Accent */
   z-index: 1;
 }
 
@@ -42,7 +43,8 @@
 
 .logo-icon {
   font-size: 2.5rem;
-  color: var(--secondary); /* Rich Cerulean */
+  color: var(--secondary);
+  /* Rich Cerulean */
   margin-bottom: 0.5rem;
 }
 
@@ -66,17 +68,21 @@ p {
 
 .floating-input input {
   width: 100%;
-  padding: 0.8rem 0.8rem 0.8rem 2.5rem; /* Space for icon */
+  padding: 0.8rem 0.8rem 0.8rem 2.5rem;
+  /* Space for icon */
   border: 1px solid #ced4da;
   border-radius: 4px;
   font-size: 1rem;
   outline: none;
   background: transparent;
+  box-sizing: border-box;
+  /* Include padding in width calculation */
 }
 
 .floating-input input:focus {
   border-color: var(--secondary);
-  box-shadow: 0 0 0 3px rgba(70, 117, 153, 0.15); /* Cerulean Glow */
+  box-shadow: 0 0 0 3px rgba(70, 117, 153, 0.15);
+  /* Cerulean Glow */
 }
 
 /* Floating Label Logic */
@@ -91,8 +97,8 @@ p {
   padding: 0 5px;
 }
 
-.floating-input input:focus ~ label,
-.floating-input input:not(:placeholder-shown) ~ label {
+.floating-input input:focus~label,
+.floating-input input:not(:placeholder-shown)~label {
   top: -10px;
   left: 2.2rem;
   font-size: 0.8rem;
@@ -112,7 +118,8 @@ p {
 button {
   width: 100%;
   padding: 0.8rem;
-  background: var(--primary); /* Twilight Indigo */
+  background: var(--primary);
+  /* Twilight Indigo */
   color: white;
   border: none;
   border-radius: 4px;
@@ -123,7 +130,8 @@ button {
 }
 
 button:hover:not(:disabled) {
-  background: var(--secondary); /* Switch to Cerulean on hover */
+  background: var(--secondary);
+  /* Switch to Cerulean on hover */
   transform: translateY(-1px);
 }
 
@@ -146,7 +154,8 @@ button:disabled {
 
 .error-box {
   background: #ffebee;
-  color: var(--highlight); /* Scarlet Rush */
+  color: var(--highlight);
+  /* Scarlet Rush */
   padding: 10px;
   border-radius: 4px;
   font-size: 0.9rem;
@@ -166,18 +175,43 @@ button:disabled {
 
 /* Animations */
 @keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-20px); }
-  100% { transform: translateY(0px); }
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-20px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
 }
 
 .shake {
-  animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+  animation: shake 0.5s cubic-bezier(.36, .07, .19, .97) both;
 }
 
 @keyframes shake {
-  10%, 90% { transform: translate3d(-1px, 0, 0); }
-  20%, 80% { transform: translate3d(2px, 0, 0); }
-  30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
-  40%, 60% { transform: translate3d(4px, 0, 0); }
+
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%,
+  80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%,
+  60% {
+    transform: translate3d(4px, 0, 0);
+  }
 }

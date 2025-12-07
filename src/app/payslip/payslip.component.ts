@@ -59,9 +59,13 @@ export class PayslipComponent implements OnInit {
       this.router.navigate(['/login']);
     } else {
       // Fetch employee email from profile
+      console.log('Fetching profile for Empid:', this.currentUser.Empid);
       this.api.getEmployeeProfile(this.currentUser.Empid).subscribe({
         next: (res) => {
+          console.log('Profile response:', res);
+          console.log('Email from profile:', res.d.Email);
           this.employeeEmail = res.d.Email || '';
+          console.log('Stored employeeEmail:', this.employeeEmail);
         },
         error: (err) => {
           console.error('Error fetching employee profile:', err);
