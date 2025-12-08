@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpBackend } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { 
-  ODataSingleResponse, 
-  ODataListResponse, 
-  Employee, 
-  LeaveRequest, 
-  LeaveBalance, 
-  Payslip 
+import {
+  ODataSingleResponse,
+  ODataListResponse,
+  Employee,
+  LeaveRequest,
+  LeaveBalance,
+  Payslip
 } from '../models/api.models';
 
 @Injectable({
@@ -15,8 +15,12 @@ import {
 })
 export class ApiService {
   private baseUrl = '/sap/opu/odata/sap/ZEMP_PORTAL_863_SRV';
+  private httpWithoutInterceptors: HttpClient;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private handler: HttpBackend) {
+    // Create specific HttpClient that bypasses all interceptors (no CSRF token added)
+    this.httpWithoutInterceptors = new HttpClient(handler);
+  }
 
   getEmployeeProfile(pernr: string): Observable<ODataSingleResponse<Employee>> {
     return this.http.get<ODataSingleResponse<Employee>>(`${this.baseUrl}/EmployeeSet('${pernr}')`);
@@ -40,5 +44,12 @@ export class ApiService {
     const url = `${this.baseUrl}/LeaveRequestSet`;
     // Note: The Interceptor handles the CSRF Token automatically
     return this.http.post(url, payload);
+  }
+  // 7. SEND PAYSLIP EMAIL (POST)
+  sendPayslipEmail(payload: { email: string; pdfContent: string; month: string; year: string }): Observable<any> {
+    // Point to the local Node.js server we just created
+    const url = 'http://localhost:3000/send-email';
+    // Use the interceptor-free client to avoid sending SAP CSRF tokens to Node.js
+    return this.httpWithoutInterceptors.post(url, payload);
   }
 }

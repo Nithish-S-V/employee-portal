@@ -1,5 +1,5 @@
 <div class="page-container">
-  
+
   <div class="page-header">
     <button routerLink="/dashboard" class="back-btn">
       <i class="bi bi-arrow-left"></i> Back
@@ -21,7 +21,7 @@
             <option *ngFor="let m of months" [value]="m.val">{{ m.name }}</option>
           </select>
         </div>
-        
+
         <div class="form-group">
           <label>Year</label>
           <select [(ngModel)]="selectedYear">
@@ -61,13 +61,40 @@
         <i class="bi bi-check-circle"></i> {{ successMessage }}
       </div>
 
+      <!-- Email Destination Selection -->
+      <div class="email-options">
+        <label class="section-label">Email Destination</label>
+
+        <div class="radio-group">
+          <label class="radio-option">
+            <input type="radio" name="emailDest" value="profile" [(ngModel)]="emailDestination">
+            <span class="radio-label">
+              <i class="bi bi-person-circle"></i> Profile Email
+              <span class="email-preview" *ngIf="employeeEmail">({{ employeeEmail }})</span>
+            </span>
+          </label>
+
+          <label class="radio-option">
+            <input type="radio" name="emailDest" value="custom" [(ngModel)]="emailDestination">
+            <span class="radio-label">
+              <i class="bi bi-envelope-at"></i> Custom Email
+            </span>
+          </label>
+        </div>
+
+        <!-- Custom Email Input (shown only when custom is selected) -->
+        <div *ngIf="emailDestination === 'custom'" class="custom-email-input">
+          <input type="email" [(ngModel)]="customEmail" placeholder="Enter email address" class="email-field">
+        </div>
+      </div>
+
       <div class="button-group">
         <button (click)="downloadPdf()" class="download-btn">
           <i class="bi bi-file-earmark-arrow-down-fill"></i> Download PDF
         </button>
-        
+
         <button (click)="emailPdf()" [disabled]="isEmailingPdf" class="email-btn">
-          <i class="bi bi-send-fill"></i> 
+          <i class="bi bi-send-fill"></i>
           <span *ngIf="!isEmailingPdf">Email PDF</span>
           <span *ngIf="isEmailingPdf">Sending...</span>
         </button>

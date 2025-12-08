@@ -20,6 +20,10 @@ export class PayslipComponent implements OnInit {
   isEmailingPdf: boolean = false;
   employeeEmail: string = '';
 
+  // Email destination selection
+  emailDestination: 'profile' | 'custom' = 'profile';
+  customEmail: string = '';
+
   // Selection
   selectedYear: string = new Date().getFullYear().toString();
   selectedMonth: string = (new Date().getMonth() + 1).toString().padStart(2, '0');
@@ -123,27 +127,72 @@ export class PayslipComponent implements OnInit {
       return;
     }
 
-    if (!this.employeeEmail) {
-      alert('No email address found in your profile.');
-      return;
-    }
-
-    // Simulate sending email
-    this.isEmailingPdf = true;
     this.successMessage = '';
     this.errorMessage = '';
 
-    // Simulate a delay for the email sending
-    setTimeout(() => {
-      this.isEmailingPdf = false;
-      this.successMessage = `Payslip sent successfully to ${this.employeeEmail}`;
-      this.cdr.detectChanges();
+    // 1. Profile Email (Simulated as requested)
+    if (this.emailDestination === 'profile') {
+      if (!this.employeeEmail) {
+        alert('No email address found in your profile.');
+        return;
+      }
 
-      // Clear success message after 5 seconds
+      this.isEmailingPdf = true;
+      // Simulate delay
       setTimeout(() => {
-        this.successMessage = '';
+        this.isEmailingPdf = false;
+        this.successMessage = `Payslip sent successfully to ${this.employeeEmail}`;
         this.cdr.detectChanges();
-      }, 5000);
-    }, 1500);
+
+        // Clear success message
+        setTimeout(() => {
+          this.successMessage = '';
+          this.cdr.detectChanges();
+        }, 5000);
+      }, 1500);
+
+    } else {
+      // 2. Custom Email (Real API Call)
+      if (!this.customEmail || !this.isValidEmail(this.customEmail)) {
+        alert('Please enter a valid email address.');
+        return;
+      }
+
+      this.isEmailingPdf = true;
+
+      const payload = {
+        email: this.customEmail,
+        pdfContent: this.payslipData.PdfContent,
+        month: this.selectedMonth,
+        year: this.selectedYear
+      };
+
+      this.api.sendPayslipEmail(payload).subscribe({
+        next: (res) => {
+          this.isEmailingPdf = false;
+          this.successMessage = `Payslip sent successfully to ${this.customEmail}`;
+          this.cdr.detectChanges();
+
+          setTimeout(() => {
+            this.successMessage = '';
+            this.cdr.detectChanges();
+          }, 5000);
+        },
+        error: (err) => {
+          console.error('Email send failed:', err);
+          this.isEmailingPdf = false;
+          this.errorMessage = 'Failed to send email. Please verify the address and try again.';
+          this.cdr.detectChanges();
+        }
+      });
+    }
+  }
+
+  // Email validation helper
+  isValidEmail(email: string): boolean {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   }
 }
+
+export type { Payslip };
