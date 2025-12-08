@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const nodemailer = require('nodemailer');
 const cors = require('cors');
@@ -18,12 +19,12 @@ app.use(bodyParser.json({ limit: '10mb' })); // Increase limit for PDF base64
 // --- SMTP Configuration ---
 // REPLACE THESE WITH YOUR ACTUAL CREDENTIALS
 const smtpConfig = {
-    host: 'smtp.gmail.com', // Default to Gmail, change if needed
-    port: 587,
+    host: process.env.EMAIL_HOST,
+    port: process.env.EMAIL_PORT,
     secure: false, // true for 465, false for other ports
     auth: {
-        user: 'nithishvengatesan41@gmail.com', // REPLACE THIS
-        pass: 'vxeg zjjh bdib yglx'     // REPLACE THIS
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
     }
 };
 
